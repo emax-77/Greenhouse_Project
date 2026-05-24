@@ -1,0 +1,12 @@
+bin/
+obj/
+*.db
+*.sqlite
+*.vs/
+**/.vscode/
+**/node_modules/
+**/bower_components/
+**/dist/
+**/out/
+**/debug/
+**/release/

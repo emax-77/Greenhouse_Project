@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Greenhouse Monitor</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f1f7fb; color: #1f2937; }
+    .container { max-width: 920px; margin: 0 auto; padding: 24px; }
+    h1 { margin-bottom: 8px; }
+    .card { background: white; border-radius: 12px; padding: 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); margin-bottom: 18px; }
+    .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+    .metric { font-size: 1.2rem; }
+    #status { font-weight: 600; }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Greenhouse Monitor</h1>
+    <div class="card">
+      <p id="status">Loading latest measurements...</p>
+      <div class="grid">
+        <div class="card"><h3>Teplota</h3><p id="temp" class="metric">—</p></div>
+        <div class="card"><h3>Vlhkosť</h3><p id="humidity" class="metric">—</p></div>
+        <div class="card"><h3>Tlak</h3><p id="pressure" class="metric">—</p></div>
+        <div class="card"><h3>Posledná aktualizácia</h3><p id="updated" class="metric">—</p></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>História</h2>
+      <canvas id="chartCanvas" height="120"></canvas>
+    </div>
+  </div>
+
+  <script>
+    const status = document.getElementById('status');
+    const temp = document.getElementById('temp');
+    const humidity = document.getElementById('humidity');
+    const pressure = document.getElementById('pressure');
+    const updated = document.getElementById('updated');
+    const canvas = document.getElementById('chartCanvas');
+    let chart;
+
+    async function loadData() {
+      try {
+        const response = await fetch('/api/greenhouse/readings');
+        const readings = await response.json();
+
+        if (!Array.isArray(readings) || readings.length === 0) {
+          status.textContent = 'Žiadne dáta zatiaľ k dispozícii.';
+          return;
+        }
+
+        const latest = readings[0];
+        temp.textContent = `${latest.temperature.toFixed(1)} °C`;
+        humidity.textContent = `${latest.humidity.toFixed(1)} %`;
+        pressure.textContent = `${latest.pressure.toFixed(1)} hPa`;
+        updated.textContent = new Date(latest.timestamp).toLocaleString();
+        status.textContent = 'Posledné meranie prijaté.';
+
+        const labels = readings.map(r => new Date(r.timestamp).toLocaleTimeString()).reverse();
+        const temps = readings.map(r => r.temperature).reverse();
+        const hums = readings.map(r => r.humidity).reverse();
+
+        const data = {
+          labels,
+          datasets: [
+            { label: 'Teplota (°C)', data: temps, borderColor: '#ef4444', backgroundColor: 'rgba(239,68,68,0.15)', tension: 0.3 },
+            { label: 'Vlhkosť (%)', data: hums, borderColor: '#2563eb', backgroundColor: 'rgba(37,99,235,0.15)', tension: 0.3 }
+          ]
+        };
+
+        if (chart) {
+          chart.data = data;
+          chart.update();
+        } else {
+          chart = new Chart(canvas, {
+            type: 'line',
+            data,
+            options: {
+              responsive: true,
+              scales: { x: { display: true }, y: { beginAtZero: false } }
+            }
+          });
+        }
+      } catch (error) {
+        status.textContent = 'Chyba pri načítaní dát.';
+        console.error(error);
+      }
+    }
+
+    loadData();
+    setInterval(loadData, 300000);
+  </script>
+</body>
+</html>
