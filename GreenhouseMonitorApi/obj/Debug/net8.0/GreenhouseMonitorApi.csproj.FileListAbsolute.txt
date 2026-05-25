@@ -67,3 +67,4 @@ C:\Users\user\source\repos\Greenhouse_Project\GreenhouseMonitorApi\obj\Debug\net
 C:\Users\user\source\repos\Greenhouse_Project\GreenhouseMonitorApi\obj\Debug\net8.0\GreenhouseMonitorApi.pdb
 C:\Users\user\source\repos\Greenhouse_Project\GreenhouseMonitorApi\obj\Debug\net8.0\GreenhouseMonitorApi.genruntimeconfig.cache
 C:\Users\user\source\repos\Greenhouse_Project\GreenhouseMonitorApi\obj\Debug\net8.0\ref\GreenhouseMonitorApi.dll
+C:\Users\user\source\repos\Greenhouse_Project\GreenhouseMonitorApi\obj\Debug\net8.0\GreenhouseMonitorApi.sourcelink.json
