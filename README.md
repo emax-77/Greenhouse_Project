@@ -1,6 +1,8 @@
 # Greenhouse Monitor
 
-Domáci projekt pre monitorovanie teploty a vlhkosti v skleníku pomocou ESP32 a senzora BME280. Data sa cez WiFi posielajú na Ubuntu server. 
+Domáci projekt pre monitorovanie teploty, vlhkosti a tlaku v skleníku pomocou ESP32 a presného senzora BME280. Data sa cez WiFi posielajú na moj Ubuntu server. 
+
+***projekt je funkčný no stále vo výstavbe***
 
 ## Zložky
 

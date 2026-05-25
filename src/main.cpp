@@ -3,13 +3,14 @@
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
+#include "secrets.h"
 
 #define SEALEVELPRESSURE_HPA (1013.25)
 
-const char* ssid = "Nase_WiFi_24";
-const char* password = "7777020411";
+const char* ssid = WIFI_SSID;
+const char* password = WIFI_PASSWORD;
 const char* serverUrl = "http://87.197.172.152:5000/api/greenhouse/readings";
-const char* apiKey = "greenhouse_local_key_2026";
+const char* apiKey = API_KEY;
 const unsigned long intervalMs = 300000; // 5 minutes
 
 Adafruit_BME280 bme;
